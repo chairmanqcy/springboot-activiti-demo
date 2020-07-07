@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.neimeng.workflow.dao.ProcessDatasetMapper">
-  <resultMap id="BaseResultMap" type="com.neimeng.workflow.entity.pojo.ProcessDataset">
+<mapper namespace="com.jiuxin.workflow.dao.ProcessDatasetMapper">
+  <resultMap id="BaseResultMap" type="com.jiuxin.workflow.entity.pojo.ProcessDataset">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="process_status" jdbcType="INTEGER" property="processStatus" />
@@ -13,17 +13,17 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
-  <resultMap id="TaskVoResultMap" type="com.neimeng.workflow.entity.vo.TaskVo" extends="BaseResultMap">
+  <resultMap id="TaskVoResultMap" type="com.jiuxin.workflow.entity.vo.TaskVo" extends="BaseResultMap">
     <result column="task_id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_name" jdbcType="VARCHAR" property="taskName" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, creator, process_status, dataset_id, proc_inst_id, dataset_name, priority, create_time, 
+    id, creator, process_status, dataset_id, proc_inst_id, dataset_name, priority, create_time,
     update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from process_dataset
     where id = #{id,jdbcType=INTEGER}
@@ -56,17 +56,17 @@
     delete from process_dataset
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.neimeng.workflow.entity.pojo.ProcessDataset">
-    insert into process_dataset (id, creator, process_status, 
-      dataset_id, proc_inst_id, dataset_name, 
+  <insert id="insert" parameterType="com.jiuxin.workflow.entity.pojo.ProcessDataset">
+    insert into process_dataset (id, creator, process_status,
+      dataset_id, proc_inst_id, dataset_name,
       priority, create_time, update_time
       )
-    values (#{id,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{processStatus,jdbcType=INTEGER}, 
-      #{datasetId,jdbcType=INTEGER}, #{procInstId,jdbcType=VARCHAR}, #{datasetName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{processStatus,jdbcType=INTEGER},
+      #{datasetId,jdbcType=INTEGER}, #{procInstId,jdbcType=VARCHAR}, #{datasetName,jdbcType=VARCHAR},
       #{priority,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.neimeng.workflow.entity.pojo.ProcessDataset">
+  <insert id="insertSelective" parameterType="com.jiuxin.workflow.entity.pojo.ProcessDataset">
     insert into process_dataset
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -127,7 +127,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.neimeng.workflow.entity.pojo.ProcessDataset">
+  <update id="updateByPrimaryKeySelective" parameterType="com.jiuxin.workflow.entity.pojo.ProcessDataset">
     update process_dataset
     <set>
       <if test="creator != null">
@@ -157,7 +157,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.neimeng.workflow.entity.pojo.ProcessDataset">
+  <update id="updateByPrimaryKey" parameterType="com.jiuxin.workflow.entity.pojo.ProcessDataset">
     update process_dataset
     set creator = #{creator,jdbcType=VARCHAR},
       process_status = #{processStatus,jdbcType=INTEGER},

@@ -1,14 +1,14 @@
 server:
-  port: 8080
+  port: 8990
 
 spring:
-# 数据库配置
+  # 数据库配置
   datasource:
     username: root
-    password: root
-    url: jdbc:mysql://localhost:3306/activiti6?useUnicode=true&nullCatalogMeansCurrent=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    password: Jiuxin2019nn
+    url: jdbc:mysql://192.168.1.87:3306/jiuxin_activiti6?useUnicode=true&nullCatalogMeansCurrent=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
-#activiti配置
+  #activiti配置
   activiti:
     database-schema-update: true
     check-process-definitions: false
@@ -16,7 +16,7 @@ spring:
     #activiti7 添加这个配置，才会生成25张表，否则只有17张
     #activiti6可以不添加，但是第一次启动只有16张表，启动两次才有26张表
     #db-history-used: true
-#freemarker模板配置
+  #freemarker模板配置
   freemarker:
     #模板的模式，支持 HTML, XML TEXT JAVASCRIPT
     mode: HTML5
@@ -36,7 +36,7 @@ logging:
 # mybatis的xml查询文件和实体类位置配置
 mybatis:
   mapper-locations: classpath*:mappers/*.xml
-  type-aliases-package: com.neimeng.workflow.entity.pojo
+  type-aliases-package: com.jiuxin.workflow.entity.pojo
 
 # 启动工程部署流程标识
 process:

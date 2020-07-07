@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.neimeng.workflow.dao.ProcessTaskMapper">
-  <resultMap id="BaseResultMap" type="com.neimeng.workflow.entity.pojo.ProcessTask">
+<mapper namespace="com.jiuxin.workflow.dao.ProcessTaskMapper">
+  <resultMap id="BaseResultMap" type="com.jiuxin.workflow.entity.pojo.ProcessTask">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="task_id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_name" jdbcType="VARCHAR" property="taskName" />
@@ -12,18 +12,18 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.neimeng.workflow.entity.pojo.ProcessTask">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jiuxin.workflow.entity.pojo.ProcessTask">
     <result column="approval_comment" jdbcType="LONGVARCHAR" property="approvalComment" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, task_id, task_name, proc_inst_id, approval_user, approval_result, approval_time, 
+    id, task_id, task_name, proc_inst_id, approval_user, approval_result, approval_time,
     create_time, update_time
   </sql>
   <sql id="Blob_Column_List">
     approval_comment
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select 
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -34,17 +34,17 @@
     delete from process_task
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
-    insert into process_task (id, task_id, task_name, 
-      proc_inst_id, approval_user, approval_result, 
-      approval_time, create_time, update_time, 
+  <insert id="insert" parameterType="com.jiuxin.workflow.entity.pojo.ProcessTask">
+    insert into process_task (id, task_id, task_name,
+      proc_inst_id, approval_user, approval_result,
+      approval_time, create_time, update_time,
       approval_comment)
-    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, 
-      #{procInstId,jdbcType=VARCHAR}, #{approvalUser,jdbcType=VARCHAR}, #{approvalResult,jdbcType=INTEGER}, 
-      #{approvalTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR},
+      #{procInstId,jdbcType=VARCHAR}, #{approvalUser,jdbcType=VARCHAR}, #{approvalResult,jdbcType=INTEGER},
+      #{approvalTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{approvalComment,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
+  <insert id="insertSelective" parameterType="com.jiuxin.workflow.entity.pojo.ProcessTask">
     insert into process_task
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -111,7 +111,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
+  <update id="updateByPrimaryKeySelective" parameterType="com.jiuxin.workflow.entity.pojo.ProcessTask">
     update process_task
     <set>
       <if test="taskId != null">
@@ -144,7 +144,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jiuxin.workflow.entity.pojo.ProcessTask">
     update process_task
     set task_id = #{taskId,jdbcType=VARCHAR},
       task_name = #{taskName,jdbcType=VARCHAR},
@@ -157,7 +157,7 @@
       approval_comment = #{approvalComment,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.neimeng.workflow.entity.pojo.ProcessTask">
+  <update id="updateByPrimaryKey" parameterType="com.jiuxin.workflow.entity.pojo.ProcessTask">
     update process_task
     set task_id = #{taskId,jdbcType=VARCHAR},
       task_name = #{taskName,jdbcType=VARCHAR},
