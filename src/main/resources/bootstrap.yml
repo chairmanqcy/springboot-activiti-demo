@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    consul:
+      host: 192.168.1.3  # 配置consul地址
+      port: 8500  # 配置consul端口
+      discovery:
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+        enabled: true  # 启用服务发现
+        register: true # 启用服务注册
+        preferIpAddress: true # 表示注册时使用IP而不是hostname
+        heartbeat:
+          enabled: true
+          ttl-value: 10
+          ttl-unit: s
+        tags: '@project.artifactId@'
+      config:
+        format: YAML    # 表示consul上面文件的格式 有四种 YAML PROPERTIES KEY-VALUE FILES
+        data-key: data  # 表示consul上面的KEY值(或者说文件的名字) 默认是data
+        prefix: config  # prefix设置配置值的基本文件夹 默认config

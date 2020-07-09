@@ -1,7 +1,8 @@
 server:
   port: 8990
-
 spring:
+  application:
+    name: @project.artifactId@
   # 数据库配置
   datasource:
     username: root
