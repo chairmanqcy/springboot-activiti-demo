@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions  xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.jeecg.com">
+  <process  id="order_process" name="工单发布审批">
+    <documentation>流程描述</documentation>
+    <extensionElements>
+
+    </extensionElements>
+    <startEvent  id="start" name="开始节点" activiti:initiator="apply_user">
+    </startEvent>
+    <endEvent  id="end" name="结束节点">
+    </endEvent>
+    <userTask  id="apply" name="申请发布" activiti:assignee="apply_user" >
+    </userTask>
+    <userTask  id="approve" name="发布审批" activiti:assignee="approve_user" >
+    </userTask>
+    <exclusiveGateway  id="gateway1" name="网关1">
+    </exclusiveGateway>
+    <exclusiveGateway  id="gateway2" name="网关2">
+    </exclusiveGateway>
+    <sequenceFlow  id="flow1" name="" sourceRef="start" targetRef="apply">
+    </sequenceFlow>
+    <sequenceFlow  id="flow2" name=" " sourceRef="apply" targetRef="gateway1">
+    </sequenceFlow>
+    <sequenceFlow  id="flow3" name="" sourceRef="gateway1" targetRef="approve">
+    </sequenceFlow>
+    <sequenceFlow  id="flow4" name=" " sourceRef="approve" targetRef="gateway2">
+    </sequenceFlow>
+    <sequenceFlow  id="flow6" name="" sourceRef="gateway2" targetRef="end">
+      <conditionExpression  xsi:type="tFormalExpression">
+        <![CDATA[${ approvalStatus == 1 }]]>
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow  id="flow5" name="" sourceRef="gateway2" targetRef="apply">
+      <conditionExpression  xsi:type="tFormalExpression">
+        <![CDATA[${ approvalStatus == 2 }]]>
+      </conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_order_process">
+    <bpmndi:BPMNPlane bpmnElement="order_process" id="BPMNPlane_order_process">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30" width="30" x="199" y="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <omgdc:Bounds height="30" width="30" x="199" y="558"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="apply" id="BPMNShape_apply">
+        <omgdc:Bounds height="55" width="90" x="169" y="133"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approve" id="BPMNShape_approve">
+        <omgdc:Bounds height="55" width="90" x="169" y="335"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gateway1" id="BPMNShape_gateway1">
+        <omgdc:Bounds height="40" width="40" x="194" y="235"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gateway2" id="BPMNShape_gateway2">
+        <omgdc:Bounds height="40" width="40" x="194" y="462"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="214" y="80" />
+        <omgdi:waypoint x="214" y="128" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="214" y="193" />
+        <omgdi:waypoint x="214" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="214" y="275" />
+        <omgdi:waypoint x="214" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="214" y="395" />
+        <omgdi:waypoint x="214" y="462" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="214" y="502" />
+        <omgdi:waypoint x="214" y="558" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="194" y="482" />
+        <omgdi:waypoint x="144" y="482" />
+        <omgdi:waypoint x="144" y="160" />
+        <omgdi:waypoint x="164" y="160" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

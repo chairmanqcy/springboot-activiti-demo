@@ -26,4 +26,6 @@ public interface ProcessTaskMapper {
      * @return
      */
     List<ProcessTask> selectByProcessInstanceId(String processInstanceId);
+
+    List<ProcessTask> selectTaskByProcessInstanceId(String processInstanceId);
 }

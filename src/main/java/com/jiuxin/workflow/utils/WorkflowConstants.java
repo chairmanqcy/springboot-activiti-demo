@@ -15,7 +15,11 @@ public final class WorkflowConstants {
     /**
      * 审批结果_流程变量名
      */
-    public static final String APPROVAL_RESULT_VARIABLE_NAME = "approval_result";
+    public static final String APPROVAL_RESULT_VARIABLE_NAME = "approvalStatus";
+    /**
+     * 审批级别_流程变量名
+     */
+    public static final String APPROVAL_LEVEL_VARIABLE_NAME = "returnLevel";
 
     /**
      * 流程图颜色定义

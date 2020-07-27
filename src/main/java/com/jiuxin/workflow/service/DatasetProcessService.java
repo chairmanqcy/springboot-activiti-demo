@@ -15,7 +15,7 @@ import com.jiuxin.workflow.entity.vo.TaskVo;
 import com.jiuxin.workflow.exception.GlobalException;
 import com.jiuxin.workflow.service.process.ProcessRuntimeService;
 import com.jiuxin.workflow.service.process.ProcessTaskService;
-import com.jiuxin.workflow.utils.SessionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
@@ -23,16 +23,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static com.jiuxin.workflow.utils.WorkflowConstants.DEFAULT_DS_PROCESS_KEY;
-import static com.jiuxin.workflow.utils.WorkflowConstants.APPROVAL_RESULT_VARIABLE_NAME;
+import static com.jiuxin.workflow.utils.WorkflowConstants.*;
 
 /**
  * 数据集-流程相关的Service
  */
 @Service
+@Slf4j
 public class DatasetProcessService {
 
     @Autowired
@@ -49,16 +51,16 @@ public class DatasetProcessService {
 
     /**
      * 获取用户需要处理的任务
-     *
-     * @param request
+     * @param currentUser
      * @return
      */
-    public PageInfo<TaskVo> getUserTask(BasePageQuery pageQuery, HttpServletRequest request) {
-        String userName = SessionUtils.getCurrentUserName(request);
+    public PageInfo<TaskVo> getUserTask(BasePageQuery pageQuery, String  currentUser) {
+
+
 
         // 分页查询用户的任务
         PageHelper.startPage(pageQuery.getPageNum(), pageQuery.getPageSize());
-        Page<TaskVo> taskVoPage = processDatasetMapper.getTasksByAssignee(userName);
+        Page<TaskVo> taskVoPage = processDatasetMapper.getTasksByAssignee(currentUser);
 
         return new PageInfo(taskVoPage);
     }
@@ -67,23 +69,30 @@ public class DatasetProcessService {
      * 申请数据集
      *
      * @param datasetBaseInfo
-     * @param request
+     * @param currentUser
      */
     @Transactional(rollbackFor = Exception.class)
-    public TaskVo applyDataSet(ApplyDatasetInfo datasetBaseInfo, HttpServletRequest request) {
-        String currentUserName = SessionUtils.getCurrentUserName(request);
+    public TaskVo applyDataSet(ApplyDatasetInfo datasetBaseInfo, String currentUser) {
 
         // TODO 获取当前用户相关的流程实例，如果当前用户没有创建的流程，则使用默认流程
-        String processDefKey = DEFAULT_DS_PROCESS_KEY;
+        String processDefKey;
+        if(StringUtils.isNotEmpty(datasetBaseInfo.getProcessDefKey())){
+            processDefKey = datasetBaseInfo.getProcessDefKey();
+        }else{
+            processDefKey = DEFAULT_DS_PROCESS_KEY;
+        }
 
         // 1、启动流程实例
-        ProcessInstance processInstance = processRuntimeService.startProcessInstanceByKey(processDefKey);
+       // ProcessInstance processInstance = processRuntimeService.startProcessInstanceByKey(processDefKey);
+
+        ProcessInstance processInstance = processRuntimeService.getProcessInstance(processDefKey);
+
 
         // 2、新增流程实例和业务关联信息
         ProcessDataset processDataset = new ProcessDataset();
         processDataset.setDatasetId(datasetBaseInfo.getDataSetId());
         processDataset.setDatasetName(datasetBaseInfo.getDataSetName());
-        processDataset.setCreator(currentUserName);
+        processDataset.setCreator(currentUser);
         processDataset.setPriority(datasetBaseInfo.getPriority().getCode());
         processDataset.setProcInstId(processInstance.getId());
         processDataset.setProcessStatus(ProcessStatusEnum.ONGOING.getCode());
@@ -105,8 +114,8 @@ public class DatasetProcessService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public void approvalTask(ProcessApproval processApproval, HttpServletRequest request) {
-        String currentUser = SessionUtils.getCurrentUserName(request);
+    public void approvalTask(ProcessApproval processApproval, String currentUser) {
+
         // 获取任务信息
         Task task = processTaskService.getTaskByTaskId(processApproval.getTaskId());
 
@@ -123,7 +132,9 @@ public class DatasetProcessService {
         // 处理任务，并设置审批流程变量，用户网关控制下一任务
         Map<String, Object> variables = new HashMap<>(16);
         variables.put(APPROVAL_RESULT_VARIABLE_NAME, processApproval.getApprovalEnum().getCode());
+        variables.put(APPROVAL_LEVEL_VARIABLE_NAME,processApproval.getReturnLevel());
         processTaskService.completeTask(task.getId(), variables);
+        log.info("variables:{}", variables);
 
         // 记录当前任务审批相关信息
         saveTaskApprovalInfo(processApproval, currentUser, task);
@@ -184,7 +195,7 @@ public class DatasetProcessService {
      * @return
      */
     public List<ProcessTask> getApprovalHistory(String processInstanceId) {
-        List<ProcessTask> taskApprovalList = processTaskMapper.selectByProcessInstanceId(processInstanceId);
+        List<ProcessTask> taskApprovalList = processTaskMapper.selectTaskByProcessInstanceId(processInstanceId);
         return taskApprovalList;
     }
 
@@ -194,10 +205,9 @@ public class DatasetProcessService {
      * 说明：这里的挂起，并不是让流程走完，而是通过设置流程状态来实现
      *
      * @param processApproval
-     * @param request
+     * @param currentUser
      */
-    public void stopProcess(ProcessApproval processApproval, HttpServletRequest request) {
-        String currentUser = SessionUtils.getCurrentUserName(request);
+    public void stopProcess(ProcessApproval processApproval, String currentUser) {
 
         Task task = processTaskService.getTaskByTaskId(processApproval.getTaskId());
         validateTaskFinished(task);

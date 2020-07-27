@@ -77,6 +77,12 @@
 
         <dependency>
             <groupId>org.activiti</groupId>
+            <artifactId>activiti-bpmn-layout</artifactId>
+            <version>${activiti.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.activiti</groupId>
             <artifactId>activiti-json-converter</artifactId>
             <version>${activiti.boot.version}</version>
             <exclusions>
@@ -125,6 +131,12 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
         </dependency>
 
         <dependency>
@@ -178,6 +190,16 @@
             </exclusions>
         </dependency>
         <!-- Swagger End-->
+
+
+        <!-- 二维码 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+
+
 
     </dependencies>
 

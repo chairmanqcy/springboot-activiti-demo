@@ -22,6 +22,15 @@
   <sql id="Blob_Column_List">
     approval_comment
   </sql>
+
+  <!-- 根据流程实例ID查询关联数据集信息 -->
+  <select id="selectTaskByProcessInstanceId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from process_task
+    where proc_inst_id = #{processInstanceId,jdbcType=VARCHAR}
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />

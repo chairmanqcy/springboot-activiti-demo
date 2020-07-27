@@ -1,6 +1,8 @@
 package com.jiuxin.workflow.controller.business;
 
+import cn.hutool.json.JSONUtil;
 import com.jiuxin.workflow.entity.ResponseEntity;
+import com.jiuxin.workflow.exception.GlobalException;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -9,11 +11,9 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,8 +50,8 @@ public class ActivityController {
     public ResponseEntity deploymentProcessDefinition(@RequestParam String deployName , @RequestParam String url) {
 
 
-        deployName = "hello_jiuxin";
-        url = " processes/helloworld.bpmn";
+//        deployName = "work_order_process";
+//        url = "processes/order_process.bpmn";
 
         //创建一个部署对象
         Deployment deployment = repositoryService
@@ -79,30 +79,31 @@ public class ActivityController {
     @PostMapping("/run")
     public ResponseEntity startProcessInstance(@RequestParam String processKey) {
 
-        processKey = "helloworld";
+//        processKey = "helloworld";
         //根据流程定义的key启动流程
         String processDefinitionKey = processKey;
         //使用流程定义的key启动流程实例，key对应bpmn文件中id的属性值，使用key值启动，默认是按照最新版本的流程定义启动
         ProcessInstance pi = runtimeService
                 .startProcessInstanceByKey(processDefinitionKey);
-
         log.info("流程实例ID:{}，流程定义ID:{}",pi.getId(),pi.getProcessDefinitionId());
 
-       return  ResponseEntity.ok("流程实例ID:"+pi.getId()+"，流程定义ID:"+pi.getProcessDefinitionId());
+       return  ResponseEntity.ok(pi.getId());
 
     }
 
     /**
-     * 第三步：查询当前人的个人任务
+     * 第三步：申请操作
      * @param  assignee 提交的審批人
      * @param  processInstanceId 流程实例ID
      */
-    @PostMapping
+    @PostMapping("/currentInfo")
     public ResponseEntity findMyPersonalTask(@RequestParam String assignee , @RequestParam String processInstanceId) {
-        assignee = "王五";
-        processInstanceId = "25001";
         List<Task> taskList = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+        if(taskList.isEmpty()){
+            throw new GlobalException("当前没有任务信息");
+        }
         log.info("当前任务处理人：{},指派任务新处理人：{}",taskList.get(0).getAssignee(),assignee);
+
         taskService.setAssignee(taskList.get(0).getId(), assignee);
         // 查询新处理人的任务
         List<Task> list = taskService
@@ -112,7 +113,11 @@ public class ActivityController {
                 .taskAssignee(assignee)
                 .list();
         printTaskInfo(list);
-        return ResponseEntity.ok(list);
+        List<String> tList = new ArrayList<>();
+        if(!list.isEmpty()){
+            list.stream().forEach(i -> tList.add(i.getId()));
+        }
+        return ResponseEntity.ok(tList);
 
     }
 
@@ -122,13 +127,12 @@ public class ActivityController {
      * @param taskId 任务ID
      */
     @PostMapping("/complete")
-    public ResponseEntity<Void> completeMyPersonalTask(@RequestParam String taskId, @RequestParam Map<String, Object> variables) {
-        //任务ID
-        taskId = "5005";
-        if(variables.isEmpty()){
+    public ResponseEntity completeMyPersonalTask(@RequestParam String taskId,
+                                                 @RequestBody(required = false) Map<String,Object> object) {
+        if(object == null){
             taskService.complete(taskId);
         }else {
-            taskService.complete(taskId,variables);
+            taskService.complete(taskId, object);
         }
 
         return ResponseEntity.ok("完成任务，任务ID = ："+taskId);
@@ -137,16 +141,43 @@ public class ActivityController {
 
 
     /**
+     * 查询指定用户的任务
+     * @param userId
+     */
+    @GetMapping("/userTask")
+    public ResponseEntity queryUserTask(@RequestParam String userId) {
+        List<Task> list = taskService.createTaskQuery().taskAssignee(userId).list();
+        log.info("当前任务处理人：{}",list.get(0).getAssignee());
+        printTaskInfo(list);
+        return ResponseEntity.ok(JSONUtil.toJsonStr(list));
+    }
+
+
+
+
+
+    /**
      * 查询当前任务
      * @param processInstanceId
      */
+    @GetMapping("/currentTask")
     public ResponseEntity queryCurrentTask(@RequestParam String processInstanceId) {
-        List<Task> list = taskService.createTaskQuery().processInstanceId("5001").list();
+        List<Task> list = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
         printTaskInfo(list);
         return ResponseEntity.ok(list);
     }
 
 
+
+    /**
+     * 查询当前所有任务
+     */
+    @GetMapping("/currentAllTask")
+    public ResponseEntity queryCurrentAllTask() {
+        List<Task> list = taskService.createTaskQuery().list();
+        printTaskInfo(list);
+        return ResponseEntity.ok(list.size());
+    }
 
 
 

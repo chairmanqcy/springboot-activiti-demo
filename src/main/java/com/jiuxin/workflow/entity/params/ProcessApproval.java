@@ -25,6 +25,11 @@ public class ProcessApproval {
     @Pattern(regexp = "^(1|2|3)$", message = "{message.process.approve.option}")
     private String approvalStatus;
 
+
+    @ApiModelProperty(value = "审批级别: ", required = true)
+    @NotNull
+    private String returnLevel;
+
     @ApiModelProperty(value = "审批意见")
     private String comment;
 

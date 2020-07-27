@@ -1,30 +1,59 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="Default_Dataset_Process_Key" name="é»˜è®¤æ•°æ®é›†å®¡æ‰¹æµç¨‹" isExecutable="true">
-    <startEvent id="startevent1" name="Start"></startEvent>
-    <userTask id="default_dataset_approval_task" name="æ•°æ®é›†å®¡æ‰¹"></userTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="default_dataset_approval_task"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow2" sourceRef="default_dataset_approval_task" targetRef="endevent1"></sequenceFlow>
+<?xml version="1.0" encoding="GBK" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:yaoqiang="http://bpmn.sourceforge.net" exporter="Yaoqiang BPMN Editor" exporterVersion="5.3" expressionLanguage="http://www.w3.org/1999/XPath" id="_1594605676241" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+  <process id="Default_Dataset_Process_Key" isClosed="false" isExecutable="true" name="Ä¬ÈÏÊý¾Ý¼¯ÉóÅúÁ÷³Ì" processType="None">
+    <extensionElements>
+      <yaoqiang:description/>
+      <yaoqiang:pageFormat height="841.8897637795276" imageableHeight="831.8897637795276" imageableWidth="588.1102362204724" imageableX="5.0" imageableY="5.0" orientation="0" width="598.1102362204724"/>
+      <yaoqiang:page background="#FFFFFF" horizontalCount="1" verticalCount="1"/>
+    </extensionElements>
+    <startEvent id="startevent1" isInterrupting="true" name="Start" parallelMultiple="false">
+      <outgoing>flow1</outgoing>
+      <outputSet/>
+    </startEvent>
+    <userTask completionQuantity="1" id="default_dataset_approval_task" implementation="##unspecified" isForCompensation="false" name="Êý¾Ý¼¯ÉóÅú" startQuantity="1">
+      <incoming>flow1</incoming>
+      <outgoing>flow2</outgoing>
+    </userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="default_dataset_approval_task"/>
+    <endEvent id="endevent1" name="End">
+      <incoming>flow2</incoming>
+      <inputSet/>
+    </endEvent>
+    <sequenceFlow id="flow2" sourceRef="default_dataset_approval_task" targetRef="endevent1"/>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_Default_Dataset_Process_Key">
-    <bpmndi:BPMNPlane bpmnElement="Default_Dataset_Process_Key" id="BPMNPlane_Default_Dataset_Process_Key">
-      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="230.0"></omgdc:Bounds>
+  <bpmndi:BPMNDiagram id="Yaoqiang_Diagram-Default_Dataset_Process_Key" name="Untitled Diagram" resolution="96.0">
+    <bpmndi:BPMNPlane bpmnElement="Default_Dataset_Process_Key">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="Yaoqiang-startevent1">
+        <omgdc:Bounds height="32.0" width="32.0" x="120.0" y="230.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="21.02" width="29.0" x="121.5" y="269.47"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="default_dataset_approval_task" id="BPMNShape_default_dataset_approval_task">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="220.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="default_dataset_approval_task" id="Yaoqiang-default_dataset_approval_task">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="220.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="21.02" width="61.0" x="222.0" y="238.99"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="350.0" y="230.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="Yaoqiang-endevent1">
+        <omgdc:Bounds height="32.0" width="32.0" x="350.0" y="230.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="21.02" width="24.0" x="354.0" y="269.47"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="155.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="200.0" y="247.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="Yaoqiang-flow2">
+        <omgdi:waypoint x="305.5" y="247.5"/>
+        <omgdi:waypoint x="350.5078144082805" y="246.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="21.02" width="6.0" x="324.5" y="235.73"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="305.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="247.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="Yaoqiang-flow1">
+        <omgdi:waypoint x="152.49218559171948" y="246.0"/>
+        <omgdi:waypoint x="200.5" y="247.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="21.02" width="6.0" x="173.0" y="236.73"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
